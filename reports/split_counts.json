@@ -1,0 +1,32 @@
+{
+  "train": {
+    "status": "ok",
+    "n": 262144,
+    "expected": 262144,
+    "matches_published_size": true,
+    "n_images": null,
+    "images_match_labels": false,
+    "no_metastasis": 131072,
+    "metastasis": 131072
+  },
+  "valid": {
+    "status": "ok",
+    "n": 32768,
+    "expected": 32768,
+    "matches_published_size": true,
+    "n_images": 32768,
+    "images_match_labels": true,
+    "no_metastasis": 16399,
+    "metastasis": 16369
+  },
+  "test": {
+    "status": "ok",
+    "n": 32768,
+    "expected": 32768,
+    "matches_published_size": true,
+    "n_images": 32768,
+    "images_match_labels": true,
+    "no_metastasis": 16391,
+    "metastasis": 16377
+  }
+}
