@@ -1,0 +1,50 @@
+[
+  {
+    "file": "valid_02862_no_metastasis.png",
+    "split": "valid",
+    "index": 2862,
+    "ground_truth_label": 0,
+    "ground_truth_name": "no_metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  },
+  {
+    "file": "valid_21676_no_metastasis.png",
+    "split": "valid",
+    "index": 21676,
+    "ground_truth_label": 0,
+    "ground_truth_name": "no_metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  },
+  {
+    "file": "valid_25497_no_metastasis.png",
+    "split": "valid",
+    "index": 25497,
+    "ground_truth_label": 0,
+    "ground_truth_name": "no_metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  },
+  {
+    "file": "valid_02880_metastasis.png",
+    "split": "valid",
+    "index": 2880,
+    "ground_truth_label": 1,
+    "ground_truth_name": "metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  },
+  {
+    "file": "valid_22800_metastasis.png",
+    "split": "valid",
+    "index": 22800,
+    "ground_truth_label": 1,
+    "ground_truth_name": "metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  },
+  {
+    "file": "valid_28155_metastasis.png",
+    "split": "valid",
+    "index": 28155,
+    "ground_truth_label": 1,
+    "ground_truth_name": "metastasis",
+    "note": "Official PCam validation split; WSI-disjoint from train."
+  }
+]

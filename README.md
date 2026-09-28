@@ -1,46 +1,128 @@
-# pcam-mets-explain
+# PatchMets-XAI
 
-**Research demo (not a diagnosis).** A small model looks at a **tiny histology patch** from a lymph node and guesses whether it contains **metastasis**. It also draws a heatmap of the pixels it used.
+*(repo folder: `pcam-mets-explain`)*
 
-This is **patch-level**, not whole-slide analysis. One square is not a patient diagnosis.
+**Research demo — not a diagnosis.**  
+**PatchMets-XAI** = **Patch**-level **met**astasis detector with e**X**plainable **AI** (Grad-CAM).
 
-> Day 0 status: repo layout, install, and environment check. Training starts on Day 1.
+A small model looks at one **tiny lymph-node histology patch** and estimates whether it contains **metastasis**. It also draws a heatmap of the pixels it used.
 
-## Setup (Day 0)
+This is **patch-level**, not whole-slide analysis. One square is not a patient result.
+
+Honest limits and leakage notes: [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md).
+
+<p align="center">
+  <img src="docs/figures/demo_gradcam_strip.png" alt="Demo: patch + Grad-CAM for metastasis and no-metastasis examples" width="480" />
+</p>
+
+<p align="center"><em>Left: original 96×96 patch · Right: Grad-CAM overlay · Labels are ground truth from PatchCamelyon validation</em></p>
+
+## Results (this repo’s beginner run)
+
+Trained **ResNet18** on a balanced PCam subset (**20k train / 4k valid**, 3 epochs, GPU).
+
+| Split | AUC | Accuracy (threshold 0.5) |
+| --- | ---: | ---: |
+| Validation | **0.946** | ~0.87 |
+| Held-out test | **0.927** | ~0.82 |
+
+<p align="center">
+  <img src="docs/figures/roc_valid.png" alt="Validation ROC" width="320" />
+  <img src="docs/figures/roc_test.png" alt="Test ROC" width="320" />
+</p>
+
+<p align="center">
+  <img src="docs/figures/gradcam_examples_valid.png" alt="Grad-CAM on TN/TP/FP/FN validation cases" width="640" />
+</p>
+
+PCam’s official splits are **WSI-disjoint** (different slides in train / valid / test). That reduces slide leakage, but this is still **not** a clinical validation.
+
+## Quick demo (Streamlit)
+
+Needs a trained checkpoint at `reports/checkpoints/best.pt` (not in git — train it, or copy yours from the machine where you trained).
 
 ```powershell
 cd C:\Users\hp\Projects\pcam-mets-explain
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -U pip
+pip install -e ".[app,dev]"
+# CPU torch if needed:
+# pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+streamlit run app/streamlit_app.py
+```
+
+Try the labeled example patches in [`reports/demo_samples/`](reports/demo_samples/) (filenames include the ground truth).
+
+On Linux (lab server):
+
+```bash
+cd /data_sde/ikrame/pcam-mets-explain
+source .venv/bin/activate
+pip install -e ".[app,dev]"
+streamlit run app/streamlit_app.py
+```
+
+## What this repo contains
+
+| Path | Role |
+| --- | --- |
+| `src/pcam_mets_explain/` | Download, train, evaluate, Grad-CAM, single-patch inference |
+| `app/streamlit_app.py` | Upload → P(metastasis) + heatmap |
+| `reports/demo_samples/` | Small PNGs with known labels for testing the app |
+| `docs/figures/` | ROC / Grad-CAM images for this README |
+| `data/` | PCam HDF5 downloads (not committed) |
+| `tests/` | Lightweight unit tests |
+
+## Reproduce the full pipeline
+
+### 1) Environment
+
+```powershell
 pip install -e ".[dev]"
 python -m pcam_mets_explain.check_env
 ```
 
-PyTorch is **not** installed yet (it is large). On Day 2, install the CPU build if you do not have a GPU:
+### 2) Download PatchCamelyon (Day 1)
 
-```powershell
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+```bash
+pip install -e ".[dev,download]"
+python -m pcam_mets_explain.download          # full train set for Day 2
+python -m pcam_mets_explain.preview
 ```
 
-## Folder layout
+Details: [`data/README.md`](data/README.md). Do **not** commit `data/raw`.
 
-| Path | Role |
-| --- | --- |
-| `data/` | PCam files you download (not committed) |
-| `src/pcam_mets_explain/` | Code |
-| `app/` | Streamlit demo (Day 4) |
-| `reports/` | Metrics, plots, example heatmaps (Day 3–5) |
-| `tests/` | Small tests that do not need the full dataset |
+### 3) Train ResNet18 (Day 2, GPU preferred)
 
-## Later this week
+```bash
+pip install -e ".[train,dev]"
+python -m pcam_mets_explain.train \
+  --epochs 3 \
+  --batch-size 64 \
+  --max-train 20000 \
+  --max-valid 4000
+```
 
-- Day 1: download PCam (or a subset) and plot example patches
-- Day 2: fine-tune ResNet18
-- Day 3: ROC, confusion matrix, Grad-CAM on successes and failures
-- Day 4: Streamlit app
-- Day 5: README screenshots and GitHub polish
+Use `--max-train 0 --max-valid 0` for the full published splits.  
+Outputs: `reports/checkpoints/best.pt`, `reports/metrics.json`.
+
+### 4) ROC, confusion matrix, Grad-CAM (Day 3)
+
+```bash
+python -m pcam_mets_explain.explain --split valid --max-samples 4000
+python -m pcam_mets_explain.explain --split test --max-samples 4000
+```
+
+### 5) Demo app (Day 4)
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+## Disclaimer
+
+Research and education only. **Not** a medical device. **Not** for diagnosis or treatment decisions. PatchCamelyon has its own data terms; do not redistribute the dataset from this repository.
 
 ## License
 
-MIT. PCam data has its own terms; do not commit the dataset.
+MIT (code). PCam data remains under its original terms.

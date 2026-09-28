@@ -20,9 +20,9 @@ data/processed/*
 *.ckpt
 *.onnx
 
-# Local reports and screenshots you generate later
-reports/metrics.json
+# Local regenerable plots (keep polished copies under docs/figures/)
 reports/figures/
+reports/tmp_*.py
 app/.streamlit/
 
 .DS_Store

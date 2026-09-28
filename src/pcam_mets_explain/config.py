@@ -10,3 +10,6 @@ IMAGE_SIZE = 96
 NUM_CLASSES = 2
 CLASS_NAMES = ("no_metastasis", "metastasis")
 SEED = 42
+
+# Published split sizes so we can check the download is complete.
+EXPECTED_SPLIT_SIZES = {"train": 262_144, "valid": 32_768, "test": 32_768}
