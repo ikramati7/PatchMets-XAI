@@ -1,6 +1,6 @@
 # PatchMets-XAI
 
-*(repo folder: `pcam-mets-explain`)*
+*(repository: `pcam-mets-explain`)*
 
 **Research demo — not a diagnosis.**  
 **PatchMets-XAI** = **Patch**-level **met**astasis detector with e**X**plainable **AI** (Grad-CAM).
@@ -17,7 +17,7 @@ Honest limits and leakage notes: [`docs/MODEL_CARD.md`](docs/MODEL_CARD.md).
 
 <p align="center"><em>Left: original 96×96 patch · Right: Grad-CAM overlay · Labels are ground truth from PatchCamelyon validation</em></p>
 
-## Results (this repo’s beginner run)
+## Results
 
 Trained **ResNet18** on a balanced PCam subset (**20k train / 4k valid**, 3 epochs, GPU).
 
@@ -53,16 +53,16 @@ streamlit run app/streamlit_app.py
 
 Try the labeled example patches in [`reports/demo_samples/`](reports/demo_samples/) (filenames include the ground truth).
 
-On Linux (lab server):
+On Linux:
 
 ```bash
-cd /data_sde/ikrame/pcam-mets-explain
+cd /path/to/pcam-mets-explain
 source .venv/bin/activate
 pip install -e ".[app,dev]"
 streamlit run app/streamlit_app.py
 ```
 
-## What this repo contains
+## Repository layout
 
 | Path | Role |
 | --- | --- |
@@ -82,17 +82,17 @@ pip install -e ".[dev]"
 python -m pcam_mets_explain.check_env
 ```
 
-### 2) Download PatchCamelyon (Day 1)
+### 2) Download PatchCamelyon
 
 ```bash
 pip install -e ".[dev,download]"
-python -m pcam_mets_explain.download          # full train set for Day 2
+python -m pcam_mets_explain.download          # omit --light for the full train set
 python -m pcam_mets_explain.preview
 ```
 
 Details: [`data/README.md`](data/README.md). Do **not** commit `data/raw`.
 
-### 3) Train ResNet18 (Day 2, GPU preferred)
+### 3) Train ResNet18 (GPU preferred)
 
 ```bash
 pip install -e ".[train,dev]"
@@ -106,14 +106,14 @@ python -m pcam_mets_explain.train \
 Use `--max-train 0 --max-valid 0` for the full published splits.  
 Outputs: `reports/checkpoints/best.pt`, `reports/metrics.json`.
 
-### 4) ROC, confusion matrix, Grad-CAM (Day 3)
+### 4) Evaluation and Grad-CAM
 
 ```bash
 python -m pcam_mets_explain.explain --split valid --max-samples 4000
 python -m pcam_mets_explain.explain --split test --max-samples 4000
 ```
 
-### 5) Demo app (Day 4)
+### 5) Demo app
 
 ```bash
 streamlit run app/streamlit_app.py

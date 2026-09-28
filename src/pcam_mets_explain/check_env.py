@@ -1,4 +1,4 @@
-"""Print a Day-0 environment report. Safe to run before PyTorch is installed."""
+"""Print an environment report. Safe to run before PyTorch is installed."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ DIST_NAMES = {
 
 
 def main() -> None:
-    print("pcam-mets-explain environment")
+    print("PatchMets-XAI environment")
     print(f"  python     {sys.version.split()[0]} ({platform.system()} {platform.machine()})")
     print(f"  project    {ROOT}")
     print(f"  data/raw   {DATA_RAW}  exists={DATA_RAW.is_dir()}")
@@ -43,8 +43,8 @@ def main() -> None:
 
         print(f"  cuda        {torch.cuda.is_available()}")
     except ImportError:
-        print("  cuda        n/a (install torch on Day 2)")
-    print("Day 0 check finished. Next: download PCam into data/raw (Day 1).")
+        print("  cuda        n/a (install torch for training or the demo)")
+    print("Environment check finished. Next: download PCam into data/raw.")
 
 
 if __name__ == "__main__":

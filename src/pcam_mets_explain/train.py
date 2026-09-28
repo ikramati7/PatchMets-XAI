@@ -1,4 +1,4 @@
-"""Day 2: fine-tune ResNet18 on PCam with validation AUC."""
+"""Fine-tune ResNet18 on PatchCamelyon with validation AUC."""
 
 from __future__ import annotations
 

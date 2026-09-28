@@ -43,7 +43,7 @@ So the name means: *an explained patch-level metastasis detector*.
 | Validation | ~0.946 | ~0.87 |
 | Held-out test | ~0.927 | ~0.82 |
 
-See also `reports/metrics.json`, `reports/day3_explain.json`, and figures under `docs/figures/`.
+See also `reports/metrics.json`, `reports/explain_report.json`, and figures under `docs/figures/`.
 
 ## Leakage and fairness (honest limits)
 

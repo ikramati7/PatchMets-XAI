@@ -24,7 +24,7 @@ def require_split(raw_dir: Path, split: str) -> tuple[Path, Path]:
         raise FileNotFoundError(
             "Missing PCam files:\n  "
             + "\n  ".join(missing)
-            + "\nRun: python -m pcam_mets_explain.download   # full train images needed for Day 2"
+            + "\nRun: python -m pcam_mets_explain.download   # full train images needed for training"
         )
     return x_path, y_path
 

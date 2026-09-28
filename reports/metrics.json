@@ -38,15 +38,15 @@
     }
   ],
   "disclaimer": "Research demo only. Patch-level, not a diagnosis.",
-  "day3": {
+  "evaluation": {
     "split": "test",
     "auc": 0.9273165000000001,
     "accuracy": 0.82275,
     "figures": {
-      "roc": "/data_sde/ikrame/pcam-mets-explain/reports/figures/roc_test.png",
-      "confusion_matrix": "/data_sde/ikrame/pcam-mets-explain/reports/figures/confusion_matrix_test.png",
-      "gradcam": "/data_sde/ikrame/pcam-mets-explain/reports/figures/gradcam_examples_test.png"
+      "roc": "reports/figures/roc_test.png",
+      "confusion_matrix": "reports/figures/confusion_matrix_test.png",
+      "gradcam": "reports/figures/gradcam_examples_test.png"
     },
-    "explain_json": "/data_sde/ikrame/pcam-mets-explain/reports/day3_explain.json"
+    "explain_json": "reports/explain_report.json"
   }
 }

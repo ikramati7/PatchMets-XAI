@@ -1,4 +1,4 @@
-"""Day 3: ROC, confusion matrix, and Grad-CAM on successes and failures."""
+"""ROC, confusion matrix, and Grad-CAM on successes and failures."""
 
 from __future__ import annotations
 
@@ -237,17 +237,17 @@ def explain(
         "auc": auc,
         "accuracy": acc,
         "confusion_matrix": confusion_matrix(labels, preds).tolist(),
-        "checkpoint": str(checkpoint),
+        "checkpoint": "reports/checkpoints/best.pt",
         "checkpoint_val_auc": payload.get("val_auc"),
         "figures": {
-            "roc": str(roc_path),
-            "confusion_matrix": str(cm_path),
-            "gradcam": str(cam_path),
+            "roc": f"reports/figures/{roc_path.name}",
+            "confusion_matrix": f"reports/figures/{cm_path.name}",
+            "gradcam": f"reports/figures/{cam_path.name}",
         },
         "case_notes": notes,
         "disclaimer": "Research demo only. Patch-level, not a diagnosis.",
     }
-    out_json = REPORTS / "day3_explain.json"
+    out_json = REPORTS / "explain_report.json"
     out_json.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 
     # Merge into metrics.json if present.
@@ -256,12 +256,12 @@ def explain(
         metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
     else:
         metrics = {}
-    metrics["day3"] = {
+    metrics["evaluation"] = {
         "split": split,
         "auc": auc,
         "accuracy": acc,
         "figures": summary["figures"],
-        "explain_json": str(out_json),
+        "explain_json": "reports/explain_report.json",
     }
     metrics_path.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
 
